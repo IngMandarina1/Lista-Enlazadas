@@ -313,7 +313,7 @@
 
         public string EliminarAntesDePosX(int posicion)
         {
-            if (PrimerNodo == null || posicion <= 1) return "Lista Vacia";
+            if (PrimerNodo == null || posicion <= 0) return "Lista Vacia";
 
             NodoD actual = PrimerNodo;
             int indice = 0;
