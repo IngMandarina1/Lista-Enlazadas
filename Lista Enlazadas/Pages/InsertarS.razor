@@ -1,0 +1,167 @@
+﻿@page "/insertarS"
+@using Lista_Enlazadas.Server;
+<PageTitle>Insertar Simplemente Enlazada</PageTitle>
+<h1 style="text-align: center">Insertar en Listas Simplemente Enlazadas</h1>
+
+<input type="text" @bind="valor" class="form-control" placeholder="Ingrese un Valor" />
+<br />
+<button @onclick="AgregarFinal" class="btn"
+        style="background-color: rgb(0, 89, 170); border-color: rgb(0, 89, 170); color: white;">
+    Insertar Nodo Al Final
+</button>
+<button @onclick="AgregarInicio" class="btn"
+        style="background-color: rgb(0, 89, 170); border-color: rgb(0, 89, 170); color: white;">
+    Insertar Nodo Al Inicio
+</button>
+<br />
+<br />
+<input type="text" @bind="valorBusqueda" class="form-control" placeholder="Valor de referencia" />
+<br />
+<button @onclick="AgregarAntesDatoX" class="btn"
+        style="background-color: rgb(0, 89, 170); border-color: rgb(0, 89, 170); color: white;">
+    Insertar antes de un Dato X
+</button>
+<button @onclick="AgregarDespuesDatoX" class="btn"
+        style="background-color: rgb(0, 89, 170); border-color: rgb(0, 89, 170); color: white;">
+    Insertar después de un Dato X
+</button>
+<button @onclick="BuscarElemento" class="btn"
+        style="background-color: rgb(0, 89, 170); border-color: rgb(0, 89, 170); color: white;">
+    Buscar Elemento
+</button>
+<br />
+<br />
+<input type="text" @bind="posicionStr" class="form-control" placeholder="Posición" />
+<br />
+<button @onclick="AgregarEnPosicion" class="btn"
+        style="background-color: rgb(0, 89, 170); border-color: rgb(0, 89, 170); color: white;">
+    Insertar en Posición
+</button>
+<button @onclick="AgregarAntesDePosicion" class="btn"
+        style="background-color: rgb(0, 89, 170); border-color: rgb(0, 89, 170); color: white;">
+    Insertar antes de Posición
+</button>
+<button @onclick="AgregarDespuesDePosicion" class="btn"
+        style="background-color: rgb(0, 89, 170); border-color: rgb(0, 89, 170); color: white;">
+    Insertar después de Posición
+</button>
+<br />
+<br />
+<button @onclick="OrdenarLista" class="btn"
+        style="background-color: rgb(0, 89, 170); border-color: rgb(0, 89, 170); color: white;">
+    Ordenar Lista
+</button>
+
+<br />
+
+<p>@mensaje</p>
+
+<ul class="list-group">
+    @{
+        Nodo nodoTemporal = Lista.PrimerNodo;
+        while (nodoTemporal != null)
+        {
+            <li class="list-group-item">@nodoTemporal.Informacion</li>
+            nodoTemporal = nodoTemporal.Referencia;
+        }
+    }
+</ul>
+<br />
+<br />
+<button @onclick="VaciarLista" class="btn"
+        style="background-color: rgb(0, 89, 170); border-color: rgb(0, 89, 170); color: white;">
+    Vaciar Lista
+</button>
+
+@code {
+    public string valor { get; set; }
+    public string valorBusqueda { get; set; }
+    public string posicionStr { get; set; }
+    public string mensaje { get; set; }
+    public LES Lista { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Lista = new LES();
+        base.OnInitialized();
+    }
+
+    Nodo crearNodo()
+    {
+        return new Nodo(valor);
+    }
+
+
+    public void AgregarFinal()
+    {
+        mensaje = Lista.AgregarNodoFinal(crearNodo());
+    }
+
+    public void AgregarInicio()
+    {
+        mensaje = Lista.AgregarNodoInicio(crearNodo());
+    }
+    public void AgregarAntesDatoX()
+    {
+        mensaje = Lista.AgregarAntesDatoX(valorBusqueda, crearNodo());
+    }
+
+    public void AgregarDespuesDatoX()
+    {
+        mensaje = Lista.AgregarDespuesDatoX(valorBusqueda, crearNodo());
+    }
+
+    public void AgregarEnPosicion()
+    {
+        if (int.TryParse(posicionStr, out int posicion))
+        {
+            mensaje = Lista.AgregarEnPosicion(posicion, crearNodo());
+        }
+        else
+        {
+            mensaje = "Posición inválida";
+        }
+    }
+
+    public void AgregarAntesDePosicion()
+    {
+        if (int.TryParse(posicionStr, out int posicion))
+        {
+            mensaje = Lista.AgregarAntesDePosicion(posicion, crearNodo());
+        }
+        else
+        {
+            mensaje = "Posición inválida";
+        }
+    }
+
+    public void AgregarDespuesDePosicion()
+    {
+        if (int.TryParse(posicionStr, out int posicion))
+        {
+            mensaje = Lista.AgregarDespuesDePosicion(posicion, crearNodo());
+        }
+        else
+        {
+            mensaje = "Posición inválida";
+        }
+    }
+
+    public void BuscarElemento()
+    {
+        var nodo = Lista.BuscarElemento(valorBusqueda);
+        mensaje = nodo != null ? $"Elemento encontrado: {nodo.Informacion}" : "Elemento no encontrado";
+    }
+
+    public void OrdenarLista()
+    {
+        mensaje = Lista.OrdenarLista();
+    }
+
+    public void VaciarLista()
+    {
+        mensaje = Lista.VaciarLista();
+    }
+
+
+}

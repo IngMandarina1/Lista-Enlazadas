@@ -1,0 +1,162 @@
+﻿@using Lista_Enlazadas.Server;
+@page "/eliminar"
+<PageTitle>Eliminar Doblemente Enlazada</PageTitle>
+<h1 style="text-align: center">Eliminar en Listas Doblemente Enlazadas</h1>
+
+<input type="text" @bind="valor" class="form-control" placeholder="Ingrese un valor" />
+<br />
+<br />
+<button @onclick="AgregarInicio" class="btn"
+        style="background-color: rgb(0, 123, 255); border-color: rgb(0, 123, 255); color: white;">
+    Insertar Nodo Al Inicio
+</button>
+<br />
+<br />
+<button @onclick="EliminarInicio" class="btn"
+        style="background-color: rgb(180, 0, 0); border-color: rgb(180, 0, 0); color: white;">
+    Eliminar Nodo Al Inicio
+</button>
+<button @onclick="EliminarFinal" class="btn"
+        style="background-color: rgb(180, 0, 0); border-color: rgb(180, 0, 0); color: white;">
+    Eliminar Nodo Al Final
+</button>
+<br />
+<br />
+<input type="text" @bind="valorBusqueda" class="form-control" placeholder="Valor de Referencia" />
+<br />
+<br />
+<button @onclick="EliminarConDatoX" class="btn"
+        style="background-color: rgb(180, 0, 0); border-color: rgb(180, 0, 0); color: white;">
+    Eliminar Nodo con Informacion X
+</button>
+<button @onclick="EliminarAntesDatoX" class="btn"
+        style="background-color: rgb(180, 0, 0); border-color: rgb(180, 0, 0); color: white;">
+    Eliminar Nodo Antes De Dato X
+</button>
+<button @onclick="EliminarDespuesDatoX" class="btn"
+        style="background-color: rgb(180, 0, 0); border-color: rgb(180, 0, 0); color: white;">
+    Eliminar Nodo Despues De Dato X
+</button>
+<br />
+<br />
+<button @onclick="Buscar" class="btn"
+        style="background-color: rgb(0, 123, 255); border-color: rgb(0, 123, 255); color: white;">
+    Buscar nodo con Dato X
+</button>
+<br />
+<br />
+<input type="text" @bind="posicion" class="form-control" placeholder="Ingrese Posicion" />
+<br />
+<br />
+<button @onclick="EliminarAntesPosicionDatoX" class="btn"
+        style="background-color: rgb(180, 0, 0); border-color: rgb(180, 0, 0); color: white;">
+    Eliminar Nodo Antes de Posicion X
+</button>
+<button @onclick="EliminarDespuesPosicionDatoX" class="btn"
+        style="background-color: rgb(180, 0, 0); border-color: rgb(180, 0, 0); color: white;">
+    Eliminar Nodo Despues de Posicion X
+</button>
+<button @onclick="Ordenar" class="btn"
+        style="background-color: rgb(0, 123, 255); border-color: rgb(0, 123, 255); color: white;">
+    Ordenar Lista
+</button>
+<br />
+<br />
+<p>@mensaje</p>
+<ul class="list-group">
+    @{
+        NodoD nodoTemporal = Lista.PrimerNodo;
+        while (nodoTemporal != null)
+        {
+            <li class="list-group-item">@nodoTemporal.Informacion</li>
+            nodoTemporal = nodoTemporal.ReferenciaSiguiente;
+        }
+    }
+</ul>
+<br />
+<br />
+<button @onclick="VaciarLista" class="btn"
+        style="background-color: rgb(0, 123, 255); border-color: rgb(0, 123, 255); color: white;">
+    Vaciar Lista
+</button>
+
+@code {
+    public string valor { get; set; }
+    public string valorBusqueda { get; set; }
+    public string posicion { get; set; }
+    public string mensaje { get; set; }
+    public LED Lista { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Lista = new LED();
+        base.OnInitialized();
+    }
+
+    NodoD CrearNodo()
+    {
+        return new NodoD(valor);
+    }
+    public void VaciarLista()
+    {
+        mensaje = Lista.VaciarLista();
+    }
+
+    public void AgregarInicio()
+    {
+        mensaje = Lista.AgregarNodoINicio(CrearNodo());
+    }
+
+    public void EliminarInicio()
+    {
+        mensaje = Lista.EliminarInicio();
+    }
+    public void EliminarFinal()
+    {
+        mensaje = Lista.EliminarFinal();
+    }
+
+    public void EliminarConDatoX()
+    {
+        mensaje = Lista.EliminarConDatoX(valorBusqueda);
+    }
+
+    public void EliminarAntesDatoX()
+    {
+        mensaje = Lista.EliminarAntesDatoX(valorBusqueda);
+    }
+    public void EliminarDespuesDatoX()
+    {
+        mensaje = Lista.EliminarDespuesDatoX(valorBusqueda);
+    }
+    public void EliminarAntesPosicionDatoX()
+    {
+        if (int.TryParse(posicion, out int posicionx))
+        {
+            mensaje = Lista.EliminarAntesDePosX(posicionx);
+        }
+        else
+        {
+            mensaje = "Posicion Invalida";
+        }
+    }
+    public void EliminarDespuesPosicionDatoX()
+    {
+        if (int.TryParse(posicion, out int posicionx))
+        {
+            mensaje = Lista.EliminarDespuesDePosX(posicionx);
+        }
+        else
+        {
+            mensaje = "Posicion Invalida";
+        }
+    }
+    public void Buscar()
+    {
+        mensaje = Lista.Buscar(valorBusqueda);
+    }
+    public void Ordenar()
+    {
+        mensaje = Lista.OrdenarLista();
+    }
+}

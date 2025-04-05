@@ -1,0 +1,65 @@
+﻿<div class="top-row ps-3 navbar navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="">Lista Enlazadas</a>
+        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+</div>
+
+<div class="@NavMenuCssClass nav-scrollable">
+    <nav class="flex-column">
+        
+        <div class="nav-item px-3">
+            <button class="nav-link btn-toggle" @onclick="@(() => ToggleMenu("home"))">
+                <span class="bi bi-house-door-fill-nav-menu"></span>Doblemente Enlazadas
+            </button>
+            <div class="submenu" style="@GetDisplayStyle("home")">
+                <NavLink class="nav-link" href="insertar">Insertar</NavLink>
+                <NavLink class="nav-link" href="eliminar">Eliminar</NavLink>
+            </div>
+        </div>
+
+        <!-- Counter con submenú -->
+        <div class="nav-item px-3">
+            <button class="nav-link btn-toggle" @onclick="@(() => ToggleMenu("counter"))">
+                <span class="bi bi-plus-square-fill-nav-menu"></span>Simplemente Enlazadas
+            </button>
+            <div class="submenu" style="@GetDisplayStyle("counter")">
+                <NavLink class="nav-link" href="insertarS">Insertar</NavLink>
+                <NavLink class="nav-link" href="eliminarS">Eliminar</NavLink>
+            </div>
+        </div>
+
+        <!-- Opción directa sin submenú -->
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="weather">
+                <span class="bi bi-list-nested-nav-menu"></span> Weather
+            </NavLink>
+        </div>
+    </nav>
+</div>
+
+@code {
+    private bool collapseNavMenu = true;
+    private Dictionary<string, bool> menus = new Dictionary<string, bool>
+    {
+        { "home", false },
+        { "counter", false }
+    };
+
+    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+
+    private void ToggleMenu(string menuName)
+    {
+        menus[menuName] = !menus[menuName];
+    }
+
+    private string GetDisplayStyle(string menuName)
+        => menus[menuName] ? "display: block;" : "display: none;";
+}
